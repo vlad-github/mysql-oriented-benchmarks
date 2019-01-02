@@ -6,25 +6,17 @@ Script is intended to stress out your system to find saturation point on varios 
 
 PLEASE DO NOT RUN THIS ON LIVE PRODUCTION BOXES.
 
-### General tips
-You need the following to run these scripts 
-- sysbench 1.0
-- MySQL installed, configured and running
-- Free 146Gb+ on MySQL data partirtion (+additinal 130Gb for binary logs if they are enabled)
-- Free 20Gb+ on the partition where this script is installed for fileIO testing
-- Idle box with no load to avoid interference with benhcmarks. For example virtual sever which is running on hardware with other loaded VDS boxes is not the best place to run the benchmarks.
-For the boxes with more than 140Gb innodb buffer pool, script will benchmark in-memory database speed
-
 ### These scripts requires SysBench installed 
-On CentOS do: 
+On CentOS you can install it using: 
 ```
   yum install sysbench
 ```  
-On Debian / Ubuntu do:
+To install sysbench on Debian / Ubuntu do:
 ```
   apt-get update
   apt-get install sysbench
 ```
+
 ### MySQL credentials 
 User sbtest and database sbtest required to run the tests. 
 
@@ -33,6 +25,20 @@ Please do the following on MySQL side before running the scripts:
   CREATE DATABASE sbtest;
   GRANT ALL PRIVILEGES ON *.* TO sbtest@localhost IDENTIFIED BY 'sbtest';
 ```
+
+### How to run:
+```
+./start_tests.sh
+```
+
+### General tips
+You need the following to run these scripts 
+- sysbench 1.0
+- MySQL installed, configured and running
+- Free 146Gb+ on MySQL data partirtion (+additinal 130Gb for binary logs if they are enabled)
+- Free 20Gb+ on the partition where this script is installed for fileIO testing
+- Idle box with no load to avoid interference with benhcmarks. For example virtual sever which is running on hardware with other loaded VDS boxes is not the best place to run the benchmarks.
+For the boxes with more than 140Gb innodb buffer pool, script will benchmark in-memory database speed
 
 ### MySQL configuration notes
 Please review your MySQL confuration. Usual settings are as follows:
