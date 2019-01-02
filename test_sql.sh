@@ -24,7 +24,7 @@ mkdir -p ./results/sql
 
 #SBCOUNT=`mysql sbtest --user=$MYSQL_USER --password=$MYSQL_PASS -NB -e "select COUNT(*) from sbtest"`
 
-mysql -u $MYSQL_USER --password=$MYSQL_PASS -e "DROP DATABASE IF EXISTS sbtest"
+mysql -u $MYSQL_USER --password=$MYSQL_PASS -e "DROP DATABASE IF EXISTS sbtest;CREATE DATABASE sbtest;"
 
 #if [[ ! "$SBCOUNT" -gt 1 ]] ; then
 #        echo "Test data not detected, running prepare"
