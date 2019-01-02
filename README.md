@@ -10,7 +10,7 @@ PLEASE DO NOT RUN THIS ON LIVE PRODUCTION BOXES.
 You need the following to run these scripts 
 - sysbench 1.0
 - MySQL installed, configured and running
-- Free 80Gb+ on MySQL data partirtion 
+- Free 146Gb+ on MySQL data partirtion (+additinal 130Gb for binary logs if they are enabled)
 - Free 20Gb+ on the partition where this script is installed for fileIO testing
 - Idle box with no load to avoid interference with benhcmarks. For example virtual sever which is running on hardware with other loaded VDS boxes is not the best place to run the benchmarks.
 
