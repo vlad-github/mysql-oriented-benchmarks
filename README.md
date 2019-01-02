@@ -1,5 +1,5 @@
 ### The Goal:
-MySQL oriented hardware and SQL benchmarks are based on SysBench and allow you to test your hardware and MySQL configuration with syntetic tests provided by SysBench to get a sense of how MySQL may act and compare different hardware, VDS and MySQL configuration.
+Perform MySQL oriented hardware and SQL benchmarks using syntetic tests provided by SysBench to get a sense of how MySQL may act and compare different hardware, VDS and MySQL configuration.
 
 ### !!! Safety warning !!!
 Script is intended to stress out your system to find saturation point on varios parts like CPU, memory and disk (IO).
@@ -42,4 +42,4 @@ Please review your MySQL confuration. Usual settings are as follows:
 - slow_query_log=OFF
 - max_connections is at least 512
 
-If you need help with sizing MySQL cluster - please feel free to send me a note via http://astellar.com/contact-me/
+If you need any help with MySQL cluster sizing - please feel free to send me a note via http://astellar.com/contact-me/
