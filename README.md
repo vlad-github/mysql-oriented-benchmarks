@@ -13,6 +13,7 @@ You need the following to run these scripts
 - Free 146Gb+ on MySQL data partirtion (+additinal 130Gb for binary logs if they are enabled)
 - Free 20Gb+ on the partition where this script is installed for fileIO testing
 - Idle box with no load to avoid interference with benhcmarks. For example virtual sever which is running on hardware with other loaded VDS boxes is not the best place to run the benchmarks.
+For the boxes with more than 140Gb innodb buffer pool, script will benchmark in-memory database speed
 
 ### These scripts requires SysBench installed 
 On CentOS do: 
@@ -32,3 +33,13 @@ Please do the following on MySQL side before running the scripts:
   CREATE DATABASE sbtest;
   GRANT ALL PRIVILEGES ON *.* TO sbtest@localhost IDENTIFIED BY 'sbtest';
 ```
+
+### MySQL configuration notes
+Please review your MySQL confuration. Usual settings are as follows:
+- innodb_buffer_pool_size is approx 80% of dedicated MySQL instance
+- log_bin (binary logging) is enabled if you plan to have replcas
+- binlog_format=MIXED & binlog_row_image=MINIMAL
+- slow_query_log=OFF
+- max_connections is at least 512
+
+If you need help with sizing MySQL cluster - please feel free to send me a note via http://astellar.com/contact-me/
