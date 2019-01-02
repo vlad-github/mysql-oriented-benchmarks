@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#echo "Estimated time: 10-20 minutes"
+echo "Estimated time: 30-40 minutes"
 
 mkdir -p ./results/cpu
 
