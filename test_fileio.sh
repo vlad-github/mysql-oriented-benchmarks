@@ -30,6 +30,8 @@ for m in seqwr ; do for t in 1 2 4 6 8 10 12 16 20 24 32 48 64 96 128 160 192 25
     sysbench --test=fileio --file-io-mode=sync --file-total-size=120G --file-extra-flags=direct --file-block-size=16384 --file-test-mode=$m --time=30 --threads=$t --file-fsync-freq=1 run > ../results/fileio/sysbench_fileio_"$m"_"$t"_fsync.txt ; 
 done ; done
 
+time sysbench --test=fileio --file-total-size=120G prepare >> ../results/fileio/fileio_prepare.log 2>&1
+
 # rndwr / fsync=0
 for m in rndwr ; do for t in 1 2 4 6 8 10 12 16 20 24 32 48 64 96 128 160 192 256 320 384 448 512 ; do echo "Test: $m threads: $t" ; 
     echo 3 > /proc/sys/vm/drop_caches
