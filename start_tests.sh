@@ -2,7 +2,9 @@
 
 ### Getting some general info about the system
 mkdir -p ./results/general_info
-pt-summary > ./results/general_info/pt-summary.info
+
+wget percona.com/get/pt-summary && chmod 755 ./pt-summary
+./pt-summary > ./results/general_info/pt-summary.info
 # in case we're in AWS
 wget -q -O - http://169.254.169.254/latest/meta-data/instance-type > ./results/general_info/aws-instance-type.info
 
