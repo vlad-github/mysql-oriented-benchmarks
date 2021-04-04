@@ -17,6 +17,7 @@ THREADS="1 2 4 6 8 10 12 16 20 24 32 48 64 96 128 160 192 256 320 384 448 512"
 
 ### force prepare for clean tests
 echo "starting tests " >> ../results/fileio/fileio_prepare.log
+rm -rf ./io_testfiles/*
 time sysbench --test=fileio --file-total-size=120G prepare >> ../results/fileio/fileio_prepare.log 2>&1
 
 echo "Running tests"
