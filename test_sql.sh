@@ -13,6 +13,7 @@ MYSQL_DATABASE=sbtest
 #CREATE DATABASE sbtest;
 #CREATE USER sbtest@localhost IDENTIFIED BY 'sbtest';
 #GRANT ALL PRIVILEGES ON sbtest.* TO sbtest@localhost;
+#GRANT SUPER ON *.* TO sbtest@localhost;
 
 mysql -u $MYSQL_USER --password=$MYSQL_PASS -e "SET GLOBAL max_prepared_stmt_count = 524288"
 mysql -u $MYSQL_USER --password=$MYSQL_PASS -e "SHOW GLOBAL variables like 'max_prepared_stmt_count'"
