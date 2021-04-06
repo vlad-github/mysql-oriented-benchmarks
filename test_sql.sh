@@ -1,17 +1,18 @@
 #!/bin/bash
 
-MYSQL_USER=<mysql_user>
-MYSQL_PASS=<mysql_password>
+MYSQL_USER=sbtest
+MYSQL_PASS=sbtest
 MYSQL_SOCK=/var/run/mysqld/mysqld.sock
-#MYSQL_DATABASE=sbtest1
+MYSQL_DATABASE=sbtest
 
 #yum install sysbench
 #apt-get update
 #apt-get install sysbench
-#sysbench 1.0.15-2
+#sysbench 1.0.20
 
 #CREATE DATABASE sbtest;
-#GRANT ALL PRIVILEGES ON *.* TO sbtest@localhost IDENTIFIED BY 'sbtest';
+#CREATE USER sbtest@localhost IDENTIFIED BY 'sbtest';
+#GRANT ALL PRIVILEGES ON sbtest.* TO sbtest@localhost;
 
 mysql -u $MYSQL_USER --password=$MYSQL_PASS -e "SET GLOBAL max_prepared_stmt_count = 524288"
 mysql -u $MYSQL_USER --password=$MYSQL_PASS -e "SHOW GLOBAL variables like 'max_prepared_stmt_count'"
@@ -22,16 +23,16 @@ mv ./results/sql/oltp_*.txt ./results/sql/`date +%F`/
 
 mkdir -p ./results/sql
 
-#SBCOUNT=`mysql sbtest --user=$MYSQL_USER --password=$MYSQL_PASS -NB -e "select COUNT(*) from sbtest"`
+SBCOUNT=`mysql sbtest --user=$MYSQL_USER --password=$MYSQL_PASS -NB -e "select COUNT(*) from sbtest"`
 
-mysql -u $MYSQL_USER --password=$MYSQL_PASS -e "DROP DATABASE IF EXISTS sbtest;CREATE DATABASE sbtest;"
+#mysql -u $MYSQL_USER --password=$MYSQL_PASS -e "DROP DATABASE IF EXISTS sbtest;CREATE DATABASE sbtest;"
 
-#if [[ ! "$SBCOUNT" -gt 1 ]] ; then
-#        echo "Test data not detected, running prepare"
+if [[ ! "$SBCOUNT" -gt 1 ]] ; then
+        echo "Test data not detected, running prepare"
         time sysbench --test=/usr/share/sysbench/oltp_point_select.lua prepare --mysql-socket=$MYSQL_SOCK --mysql-user=$MYSQL_USER --mysql-password=$MYSQL_PASS --tables=64 --table-size=10000000 --threads=16 > ./results/sql/oltp_prepare.log 2>&1
-#else
-#        echo "$SBCOUNT: OK, prepare already completed"
-#fi
+else
+        echo "$SBCOUNT: OK, prepare already completed"
+fi
 
 
 sysbench --test=/usr/share/sysbench/oltp_point_select.lua run --mysql-socket=$MYSQL_SOCK --mysql-user=$MYSQL_USER --mysql-password=$MYSQL_PASS --tables=64 --table-size=10000000 --threads=1 --max-time=100 > ./results/sql/oltp_point_select_cold_run_single_thread.txt 
