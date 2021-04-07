@@ -43,7 +43,7 @@ else
         echo "$SBCOUNT: OK, prepare already completed, warming up data"
         for table in `mysql --user=$MYSQL_USER --password=$MYSQL_PASS -NB -e "SHOW TABLES FROM $MYSQL_DATABASE"` ; do
                 echo "warming up table $table\n" 
-                mysql $MYSQL_DATABASE --user=$MYSQL_USER --password=$MYSQL_PASS -NB -e "select COUNT(pad) from $table"` 
+                mysql $MYSQL_DATABASE --user=$MYSQL_USER --password=$MYSQL_PASS -NB -e "select COUNT(pad) from $table"
         done
 fi
 
