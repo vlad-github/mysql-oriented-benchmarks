@@ -32,7 +32,7 @@ mkdir -p ./results/sql
 
 SBCOUNT=`mysql $MYSQL_DATABASE --user=$MYSQL_USER --password=$MYSQL_PASS -NB -e "select COUNT(*) from sbtest1"`
 
-#mysql -u $MYSQL_USER --password=$MYSQL_PASS -e "DROP DATABASE IF EXISTS sbtest;CREATE DATABASE sbtest;"
+mysql -u $MYSQL_USER --password=$MYSQL_PASS -e "DROP DATABASE IF EXISTS sbtest; CREATE DATABASE sbtest;"
 
 if [[ ! "$SBCOUNT" -gt 1 ]] ; then
         echo "Test data not detected, running prepare"
