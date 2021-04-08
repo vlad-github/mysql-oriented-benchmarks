@@ -40,19 +40,14 @@ if [[ "$SBCOUNT" -lt 10000 ]] ; then
         time sysbench --test=/usr/share/sysbench/oltp_point_select.lua prepare \
                 --mysql-socket=$MYSQL_SOCK --mysql-user=$MYSQL_USER --mysql-password=$MYSQL_PASS \
                 --tables=$TABLES --table-size=$SIZE --threads=16 > ./results/sql/oltp_prepare.log 2>&1
-else
-        echo "$SBCOUNT: OK, prepare already completed, warming up data"
-        for table in `mysql --user=$MYSQL_USER --password=$MYSQL_PASS -NB -e "SHOW TABLES FROM $MYSQL_DATABASE"` ; do
-                echo "warming up table $table\n" 
-                mysql $MYSQL_DATABASE --user=$MYSQL_USER --password=$MYSQL_PASS -NB -e "select COUNT(pad) from $table"
-        done
+        echo "Prepare completed"
 fi
 
-# warmup
-sysbench --test=/usr/share/sysbench/oltp_point_select.lua run \
-        --mysql-socket=$MYSQL_SOCK --mysql-user=$MYSQL_USER --mysql-password=$MYSQL_PASS \
-        --tables=$TABLES --table-size=$SIZE --threads=1 \
-        --max-time=100 > ./results/sql/oltp_point_select_cold_run_single_thread.txt 
+echo "Warming up the data: "
+time for table in `mysql --user=$MYSQL_USER --password=$MYSQL_PASS -NB -e "SHOW TABLES FROM $MYSQL_DATABASE"` ; do
+        echo -n "$table " 
+        mysql $MYSQL_DATABASE --user=$MYSQL_USER --password=$MYSQL_PASS -NB -e "select COUNT(pad) from $table"
+done
 
 for t in 1 2 4 6 8 12 16 24 32 48 64 96 128 160 192 224 256 288 320 352 384 416 448 480 512 ; do 
         echo -n "RO/treads=$t:\t" ; 
