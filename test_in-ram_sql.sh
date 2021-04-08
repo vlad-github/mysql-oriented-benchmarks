@@ -30,11 +30,10 @@ mv ./results/sql/oltp_*.txt ./results/sql/`date +%F`/
 
 mkdir -p ./results/sql
 
-SBCOUNT=`mysql $MYSQL_DATABASE --user=$MYSQL_USER --password=$MYSQL_PASS -NB -e "select COUNT(*) from sbtest1"`
-
-echo $SBCOUNT
-
 mysql -u $MYSQL_USER --password=$MYSQL_PASS -e "DROP DATABASE IF EXISTS sbtest; CREATE DATABASE sbtest;"
+
+SBCOUNT=`mysql $MYSQL_DATABASE --user=$MYSQL_USER --password=$MYSQL_PASS -NB -e "select COUNT(*) from sbtest1"`
+echo $SBCOUNT
 
 if [[ "$SBCOUNT" -lt 10000 ]] ; then
         echo "Test data not detected, running prepare"
