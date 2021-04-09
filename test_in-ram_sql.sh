@@ -7,7 +7,9 @@ MYSQL_PASS=sbtest
 MYSQL_SOCK=/var/run/mysqld/mysqld.sock
 MYSQL_DATABASE=sbtest
 
+THREADS="1 2 4 6 8 10 12 16 20 24 32 48 64 96 128 160 192 256 320 384 448 512"
 TABLES=64
+PREPARE_THREADS=16
 SIZE=1000000
 
 
@@ -39,7 +41,7 @@ if [[ "$SBCOUNT" -lt 10000 ]] ; then
         echo "Test data not detected, running prepare"
         time sysbench --test=/usr/share/sysbench/oltp_point_select.lua prepare \
                 --mysql-socket=$MYSQL_SOCK --mysql-user=$MYSQL_USER --mysql-password=$MYSQL_PASS \
-                --tables=$TABLES --table-size=$SIZE --threads=16 > ./results/sql/oltp_prepare.log 2>&1
+                --tables=$TABLES --table-size=$SIZE --threads=$PREPARE_THREADS > ./results/sql/oltp_prepare.log 2>&1
         echo "Prepare completed"
 fi
 
@@ -49,7 +51,7 @@ time for table in `mysql --user=$MYSQL_USER --password=$MYSQL_PASS -NB -e "SHOW 
         mysql $MYSQL_DATABASE --user=$MYSQL_USER --password=$MYSQL_PASS -NB -e "select COUNT(pad) from $table"
 done
 
-for t in 1 2 4 6 8 12 16 24 32 48 64 96 128 160 192 224 256 288 320 352 384 416 448 480 512 ; do 
+for t in $THREADS ; do 
         echo -n "RO/treads=$t:\t" ; 
         sysbench --test=/usr/share/sysbench/oltp_point_select.lua run --mysql-socket=$MYSQL_SOCK --mysql-user=$MYSQL_USER \
                 --mysql-password=$MYSQL_PASS --tables=$TABLES --table-size=$SIZE --threads=$t \
@@ -57,7 +59,7 @@ for t in 1 2 4 6 8 12 16 24 32 48 64 96 128 160 192 224 256 288 320 352 384 416 
         sleep 10 ; 
 done
 
-for t in 1 2 4 6 8 12 16 24 32 48 64 96 128 160 192 224 256 288 320 352 384 416 448 480 512 ; do 
+for t in $THREADS ; do 
         echo -n "RW/threads=$t:\t" ; 
         sysbench --test=/usr/share/sysbench/oltp_read_write.lua run --mysql-socket=$MYSQL_SOCK --mysql-user=$MYSQL_USER \
                 --mysql-password=$MYSQL_PASS --tables=$TABLES --table-size=$SIZE --threads=$t \
