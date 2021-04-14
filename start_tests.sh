@@ -11,5 +11,5 @@ wget -q -O - http://169.254.169.254/latest/meta-data/instance-type > ./results/g
 bash ./test_cpu.sh
 bash ./test_fileio.sh
 bash ./test_mem.sh
-bash ./test_sql.sh
+bash ./test_sql_short.sh
 
