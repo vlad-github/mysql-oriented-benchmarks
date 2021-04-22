@@ -12,4 +12,6 @@ bash ./test_cpu.sh
 bash ./test_fileio.sh
 bash ./test_mem.sh
 bash ./test_sql_short.sh
+bash ./test_sql.sh
+bash ./test_sql_full.sh
 
