@@ -4,7 +4,7 @@
 
 MYSQL_USER=sbtest
 MYSQL_PASS=sbtest
-MYSQL_SOCK=`mysql -NB -e "SELECT @@socket"`
+MYSQL_SOCK=`mysql --user=$MYSQL_USER --password=$MYSQL_PASS -NB -e "SELECT @@socket"`
 MYSQL_DATABASE=sbtest
 
 TARGET_DIR=./results/sql_ram_ro
