@@ -2,7 +2,7 @@
 
 MYSQL_USER=sbtest
 MYSQL_PASS=sbtest
-MYSQL_SOCK=/var/run/mysqld/mysqld.sock
+MYSQL_SOCK=`mysql --user=$MYSQL_USER --password=$MYSQL_PASS -NB -e "SELECT @@socket"`
 MYSQL_DATABASE=sbtest
 
 THREADS="1 2 4 6 8 10 12 16 20 24 32 48 64 96 128 160 192 256 320 384 448 512"
