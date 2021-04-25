@@ -4,7 +4,7 @@
 
 MYSQL_USER=sbtest
 MYSQL_PASS=sbtest
-MYSQL_SOCK=/var/run/mysqld/mysqld.sock
+MYSQL_SOCK=`mysql -NB -e "SELECT @@socket"`
 MYSQL_DATABASE=sbtest
 
 TARGET_DIR=./results/sql_ram_ro
