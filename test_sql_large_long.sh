@@ -28,33 +28,21 @@ mkdir -p $TARGET_DIR/`date +%F`
 
 mv $TARGET_DIR/oltp_*.txt $TARGET_DIR/`date +%F`/
 
-SBCOUNT=`mysql $MYSQL_DATABASE --user=$MYSQL_USER --password=$MYSQL_PASS -NB -e "select COUNT(*) from sbtest1"`
-
+#SBCOUNT=`mysql $MYSQL_DATABASE --user=$MYSQL_USER --password=$MYSQL_PASS -NB -e "select COUNT(*) from sbtest1"`
 #mysql -u $MYSQL_USER --password=$MYSQL_PASS -e "DROP DATABASE IF EXISTS sbtest;CREATE DATABASE sbtest;"
+#echo "Current table size: $SBCOUNT."
 
-echo "Current table size: $SBCOUNT."
-
-if [[ $SBCOUNT -lt $SIZE ]] ; then
-        echo "Test data doesn't have enough rows, resetting test data"
-	mysql -u $MYSQL_USER --password=$MYSQL_PASS -e "DROP DATABASE IF EXISTS sbtest;CREATE DATABASE sbtest;"
-        time sysbench --test=/usr/share/sysbench/oltp_point_select.lua prepare \
-                --mysql-socket=$MYSQL_SOCK --mysql-user=$MYSQL_USER --mysql-password=$MYSQL_PASS \
-                --tables=64 --table-size=$SIZE --threads=$PREPARE_THREADS > $TARGET_DIR/oltp_prepare.log 2>&1
-else
-        echo "$SBCOUNT: OK, prepare already completed, string partial warm up "
-	# warmup
-	sysbench --test=/usr/share/sysbench/oltp_point_select.lua run \
-	        --mysql-socket=$MYSQL_SOCK --mysql-user=$MYSQL_USER --mysql-password=$MYSQL_PASS \
-	        --tables=$TABLES --table-size=$SIZE --threads=1 \
-	        --max-time=300 > $TARGET_DIR/oltp_point_select_cold_run_single_thread.txt 
-fi
+echo "Resetting test data..."
+mysql -u $MYSQL_USER --password=$MYSQL_PASS -e "DROP DATABASE IF EXISTS sbtest;CREATE DATABASE sbtest;"
+time sysbench --test=/usr/share/sysbench/oltp_point_select.lua prepare \
+        --mysql-socket=$MYSQL_SOCK --mysql-user=$MYSQL_USER --mysql-password=$MYSQL_PASS \
+        --tables=$TABLES --table-size=$SIZE --threads=$PREPARE_THREADS > $TARGET_DIR/oltp_prepare.log 2>&1
 
 for t in $THREADS ; do 
         echo -n "RO/treads=$t:\t" ; 
         sysbench --test=/usr/share/sysbench/oltp_point_select.lua run --mysql-socket=$MYSQL_SOCK --mysql-user=$MYSQL_USER \
                 --mysql-password=$MYSQL_PASS --tables=$TABLES --table-size=$SIZE --threads=$t \
                 --max-time=300 > $TARGET_DIR/oltp_point_select_"$t".txt ; 
-        sleep 10 ; 
 done
 
 for t in $THREADS ; do 
@@ -62,5 +50,4 @@ for t in $THREADS ; do
         sysbench --test=/usr/share/sysbench/oltp_read_write.lua run --mysql-socket=$MYSQL_SOCK --mysql-user=$MYSQL_USER \
                 --mysql-password=$MYSQL_PASS --tables=$TABLES --table-size=$SIZE --threads=$t \
                 --max-time=300 > $TARGET_DIR/oltp_read_write_"$t".txt ; 
-        sleep 10 ; 
 done
