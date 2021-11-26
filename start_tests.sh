@@ -12,7 +12,6 @@ bash ./test_cpu.sh
 bash ./test_fileio.sh
 bash ./test_mem.sh
 bash ./test_sql_inram.sh
-bash ./test_sql_inram_long.sh
+# bash ./test_sql_inram_long.sh
 bash ./test_sql_large.sh
-bash ./test_sql_large_long.sh
-
+# bash ./test_sql_large_long.sh
